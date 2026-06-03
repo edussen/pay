@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numart Pay — Pago seguro</title>
+<link rel="icon" type="image/png" href="https://imagenes.numart.com.co/corporate-image/numartIsotypeBlue-v3.ico">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+<style>
+:root {
+  --left-bg: #1a1a1a;
+  --left-surface: #232323;
+  --left-border: #2e2e2e;
+  --left-text: #f5f5f5;
+  --left-muted: #8a8a8a;
+  --left-subtle: #3a3a3a;
+
+  --right-bg: #ffffff;
+  --right-border: #e8e8ea;
+  --right-border2: #d1d1d6;
+  --right-text: #1a1a1a;
+  --right-muted: #6e6e73;
+  --right-input-bg: #f9f9f9;
+  --right-focus: #0071e3;
+
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --success: #34c759;
+  --error: #ff3b30;
+  --warning: #ff9f0a;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--sans);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── LEFT PANEL ─────────────────────────────────── */
+.left {
+  width: 42%;
+  background: var(--left-bg);
+  min-height: 100vh;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle grid texture */
+.left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--left-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 44px;
+  padding: 0;
+  transition: color 0.15s;
+  position: relative;
+  z-index: 1;
+}
+
+.back-btn:hover { color: var(--left-text); }
+.back-btn i { font-size: 15px; }
+
+/* merchant block */
+.merchant-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.merchant-logo-wrap {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-md);
+  background: #2e2e2e;
+  border: 1px solid var(--left-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* ── REEMPLAZA ESTO CON TU LOGO ──
+   Pon la URL de tu imagen en src=""
+   Si no hay imagen, se muestra el placeholder de texto */
+.merchant-logo-wrap img {
+  width: 90%; height: 90%;
+  object-fit: contain;
+}
+
+.merchant-logo-placeholder {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--left-text);
+  letter-spacing: -0.5px;
+}
+
+.merchant-meta {}
+
+.merchant-paying-to {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--left-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.merchant-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--left-text);
+  letter-spacing: -0.3px;
+}
+
+/* amount */
+.amount-block {
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.amount-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--left-muted);
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+
+.amount-value {
+  font-family: var(--mono);
+  font-size: 42px;
+  font-weight: 500;
+  color: var(--left-text);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.amount-currency {
+  font-size: 16px;
+  color: var(--left-muted);
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+/* line items */
+.line-items {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--left-border);
+  font-size: 14px;
+}
+
+.line-item:last-of-type { border-bottom: none; }
+
+.li-left {}
+.li-name {
+  font-weight: 500;
+  color: var(--left-text);
+  margin-bottom: 2px;
+}
+.li-sub {
+  font-size: 12px;
+  color: var(--left-muted);
+}
+
+.li-amount {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--left-text);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.subtotal-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--left-subtle);
+}
+
+.subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--left-muted);
+  padding: 4px 0;
+}
+
+.subtotal-row .val {
+  font-family: var(--mono);
+  color: var(--left-muted);
+  font-size: 13px;
+  letter-spacing: -0.3px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--left-text);
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid var(--left-subtle);
+}
+
+.total-row .val {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: -0.5px;
+}
+
+/* session token display */
+.session-block {
+  margin-top: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.session-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--left-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.session-label i { font-size: 12px; }
+
+.session-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #4a4a4a;
+  word-break: break-all;
+  line-height: 1.5;
+  background: var(--left-surface);
+  border: 1px solid var(--left-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+/* left footer */
+.left-footer {
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--left-muted);
+}
+
+.left-footer i { font-size: 14px; }
+
+.powered-stripe {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #5a5a5a;
+  letter-spacing: 0.3px;
+}
+
+.footer-links {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--left-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover { color: var(--left-text); }
+
+/* ─── RIGHT PANEL ────────────────────────────────── */
+.right {
+  flex: 1;
+  background: var(--right-bg);
+  min-height: 100vh;
+  padding: 48px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--right-text);
+  letter-spacing: -0.3px;
+  margin-bottom: 28px;
+}
+
+/* email row */
+.email-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--right-input-bg);
+  border: 1px solid var(--right-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.email-inner { display: flex; align-items: center; gap: 10px; }
+.email-inner i { font-size: 16px; color: var(--right-muted); }
+
+.email-texts {}
+.email-cap { font-size: 11px; color: var(--right-muted); font-weight: 500; margin-bottom: 2px; }
+.email-addr { font-size: 14px; font-weight: 500; color: var(--right-text); }
+
+.email-edit {
+  font-size: 13px;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* section label */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--right-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* card form */
+.card-form {
+  border: 1px solid var(--right-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  position: relative;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--right-border);
+  transition: background 0.1s;
+}
+
+.form-row:last-child { border-bottom: none; }
+.form-row:focus-within { background: #fafbff; }
+
+.form-row-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--right-muted);
+  letter-spacing: 0.3px;
+  padding-top: 12px;
+  display: block;
+}
+
+.field-input {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--right-text);
+  padding: 6px 0 12px;
+  caret-color: var(--accent);
+}
+
+.field-input::placeholder {
+  color: var(--right-border2);
+}
+
+.field-input.mono {
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* card row with brands */
+.card-number-row {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--right-border);
+}
+
+.card-number-row:focus-within { background: #fafbff; }
+
+.card-num-wrap { flex: 1; }
+
+.brands-row {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.brand {
+  height: 22px;
+  border-radius: 3px;
+  padding: 0 5px;
+  font-size: 8px;
+  font-family: var(--mono);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.25;
+  transition: opacity 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.brand.lit { opacity: 1; }
+.b-visa { background: #1a1f71; color: white; }
+.b-mc { background: linear-gradient(90deg,#eb001b 40%,#f79e1b 60%); color: white; }
+.b-amex { background: #2557d6; color: white; }
+.b-jcb { background: #003087; color: white; }
+
+/* split row */
+.split-row {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  border-bottom: 1px solid var(--right-border);
+}
+
+.split-row:focus-within { background: #fafbff; }
+
+.split-divider { background: var(--right-border); }
+
+.split-cell { padding: 0 16px; }
+
+/* select */
+.field-select {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--right-text);
+  padding: 6px 0 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-20%);
+  pointer-events: none;
+  color: var(--right-muted);
+  font-size: 16px;
+}
+
+/* field errors */
+.field-err {
+  font-size: 12px;
+  color: var(--error);
+  display: none;
+  padding: 4px 16px 10px;
+  background: #fff5f5;
+  border-top: 1px solid #ffd0cc;
+  align-items: center;
+  gap: 5px;
+}
+
+.field-err i { font-size: 13px; }
+.field-err.show { display: flex; }
+
+/* error form-row border */
+.form-row.has-error { border-color: #ffd0cc; }
+.card-number-row.has-error { border-color: #ffd0cc; }
+.split-row.has-error { border-color: #ffd0cc; }
+
+/* test cards helper */
+.test-helper {
+  background: #fffcf0;
+  border: 1px solid #f0d878;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.test-helper-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #7a6010;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.test-helper-title i { font-size: 13px; }
+
+.test-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.tc-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: white;
+  border: 1px solid #e8dfa0;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tc-btn:hover { background: #fffdf0; border-color: #c8b830; }
+
+.tc-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #4a3a10;
+  letter-spacing: 0.5px;
+}
+
+.tc-desc {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.tc-desc.ok { color: #34c759; }
+.tc-desc.err { color: var(--error); }
+.tc-desc.warn { color: var(--warning); }
+
+/* terms */
+.terms {
+  font-size: 12px;
+  color: var(--right-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.terms a { color: var(--accent); text-decoration: none; }
+.terms a:hover { text-decoration: underline; }
+
+/* pay button */
+.pay-btn {
+  width: 100%;
+  padding: 15px 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  letter-spacing: -0.1px;
+  margin-bottom: 20px;
+}
+
+.pay-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,113,227,0.3);
+}
+
+.pay-btn:active { transform: translateY(0); box-shadow: none; }
+
+.pay-btn i { font-size: 16px; }
+
+/* right footer */
+.right-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--right-muted);
+}
+
+.right-footer-sep { color: var(--right-border2); }
+.right-footer a { color: var(--right-muted); text-decoration: none; }
+.right-footer a:hover { text-decoration: underline; }
+
+/* ─── LOADING OVERLAY ─────────────────────────── */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+#overlay.show { opacity: 1; pointer-events: all; }
+
+.overlay-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: 36px 44px;
+  text-align: center;
+  min-width: 300px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+}
+
+.spinner-ring {
+  width: 48px; height: 48px;
+  border: 3px solid #e8e8ea;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ov-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--right-text);
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+}
+
+.ov-sub {
+  font-size: 13px;
+  color: var(--right-muted);
+  margin-bottom: 20px;
+}
+
+.progress-track {
+  height: 3px;
+  background: #e8e8ea;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.35s ease;
+}
+
+/* ─── RESULT SCREEN ───────────────────────────── */
+#result {
+  position: fixed;
+  inset: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#result.show { opacity: 1; pointer-events: all; }
+
+.result-inner {
+  max-width: 440px;
+  width: 100%;
+  padding: 32px;
+}
+
+/* icon circles */
+.icon-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  transform: scale(0);
+}
+
+.icon-circle i { font-size: 34px; color: white; }
+.icon-circle.success-c { background: var(--success); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+.icon-circle.error-c { background: var(--error); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+.icon-circle.warn-c { background: var(--warning); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+
+@keyframes popIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.res-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--right-text);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.3s both;
+}
+
+.res-sub {
+  font-size: 14px;
+  color: var(--right-muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.4s both;
+}
+
+/* detail box */
+.detail-box {
+  border: 1px solid var(--right-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.5s both;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--right-border);
+}
+
+.detail-row:last-child { border-bottom: none; }
+.detail-row span:first-child { color: var(--right-muted); }
+.detail-row span:last-child { font-weight: 500; color: var(--right-text); }
+
+.detail-row span.mono-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* action buttons */
+.res-actions {
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.6s both;
+}
+
+.res-btn-primary {
+  flex: 1;
+  padding: 13px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.res-btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+.res-btn-secondary {
+  flex: 1;
+  padding: 13px;
+  background: transparent;
+  color: var(--right-text);
+  border: 1.5px solid var(--right-border2);
+  border-radius: var(--radius-md);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.res-btn-secondary:hover { border-color: var(--right-border); background: var(--right-input-bg); transform: translateY(-1px); }
+
+/* confetti */
+#confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+/* success pulse ring */
+@keyframes ringPulse {
+  0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(52,199,89,0); }
+  100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); }
+}
+
+.icon-circle.success-c.pulse { animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both, ringPulse 1.5s ease 0.7s infinite; }
+
+/* responsive */
+@media (max-width: 720px) {
+  body { flex-direction: column; }
+  .left, .right { width: 100%; min-height: auto; padding: 32px 24px; }
+  .left { border-bottom: 1px solid var(--left-border); }
+  .amount-value { font-size: 32px; }
+  .session-block { display: none; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- ══════════════════════════════════════════
+     LEFT PANEL
+══════════════════════════════════════════ -->
+<div class="left">
+
+  <button class="back-btn" onclick="history.back()">
+    <i class="ph ph-arrow-left"></i>
+    Volver
+  </button>
+
+  <div class="merchant-block">
+    <div class="merchant-logo-wrap">
+
+        <img src="https://imagenes.numart.com.co/corporate-image/numartIsotypeBlue-v3.png" alt="Numart">
+    </div>
+    <div class="merchant-meta">
+      <div class="merchant-paying-to">Pagar a</div>
+      <div class="merchant-name">Numart</div>
+    </div>
+  </div>
+
+  <div class="amount-block">
+    <div class="amount-label">Total a pagar</div>
+    <div class="amount-value">
+      <span class="amount-currency">COP </span><span id="leftAmount">1,149,900.00</span>
+    </div>
+  </div>
+
+  <div class="line-items">
+    <div class="line-item">
+      <div class="li-left">
+        <div class="li-name" id="liProduct">24,000 Robux</div>
+        <div class="li-sub">Qty 1</div>
+      </div>
+      <div class="li-amount" id="liPrice">COP&nbsp;1,149,900.00</div>
+    </div>
+
+    <div class="subtotal-section">
+      <div class="subtotal-row">
+        <span>Subtotal</span>
+        <span class="val" id="liSub">COP&nbsp;1,149,900.00</span>
+      </div>
+      <div class="subtotal-row">
+        <span>IVA (19%)</span>
+        <span class="val" id="liVat">COP&nbsp;183,597.00</span>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span>Total</span>
+      <span class="val" id="liTotal">COP&nbsp;1,149,900.00</span>
+    </div>
+  </div>
+
+  <!-- Session token simulado — igual que los links de Stripe 
+  <div class="session-block">
+    <div class="session-label">
+      <i class="ph ph-key"></i>
+      ID de sesión
+    </div>
+    <div class="session-id" id="sessionDisplay">Cargando sesión...</div>
+  </div>-->
+
+  <div class="left-footer">
+    <i class="ph ph-lock-key"></i>
+    <span class="powered-stripe">Pago seguro</span>
+    <div class="footer-links">
+      <a href="#">Privacidad</a>
+      <a href="#">Legal</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RIGHT PANEL
+══════════════════════════════════════════ -->
+<div class="right">
+
+  <div class="right-title">Paga con tarjeta</div>
+
+  <!-- Email -->
+  <div class="email-row">
+    <div class="email-inner">
+      <i class="ph ph-envelope"></i>
+      <div class="email-texts">
+        <div class="email-cap">Email</div>
+        <div class="email-addr" id="userEmail">mrluki4656@gmail.com</div>
+      </div>
+    </div>
+    <button class="email-edit">Editar</button>
+  </div>
+
+  <!-- Test cards -->
+  <!--<div class="section-label">Tarjetas de prueba</div>
+  <div class="test-helper">
+    <div class="test-helper-title">
+      <i class="ph ph-flask"></i>
+      Selecciona una tarjeta para simular el pago
+    </div>
+    <div class="test-cards-grid">
+      <button class="tc-btn" onclick="fill('4242424242424242','success')">
+        <span class="tc-num">4242 4242 4242 4242</span>
+        <span class="tc-desc ok">Aprobada</span>
+      </button>
+      <button class="tc-btn" onclick="fill('4000000000000002','declined')">
+        <span class="tc-num">4000 0000 0000 0002</span>
+        <span class="tc-desc err">Rechazada</span>
+      </button>
+      <button class="tc-btn" onclick="fill('4000000000009995','no_funds')">
+        <span class="tc-num">4000 0000 0000 9995</span>
+        <span class="tc-desc warn">Sin fondos</span>
+      </button>
+      <button class="tc-btn" onclick="fill('4000000000000069','expired')">
+        <span class="tc-num">4000 0000 0000 0069</span>
+        <span class="tc-desc err">Tarjeta vencida</span>
+      </button>
+      <button class="tc-btn" onclick="fill('4100000000000019','fraud')">
+        <span class="tc-num">4100 0000 0000 0019</span>
+        <span class="tc-desc err">Fraude detectado</span>
+      </button>
+      <button class="tc-btn" onclick="fill('4000002500003155','3ds')">
+        <span class="tc-num">4000 0025 0000 3155</span>
+        <span class="tc-desc warn">Requiere 3D Secure</span>
+      </button>
+    </div>
+  </div>-->
+
+  <!-- Card form -->
+  <div class="section-label">Información de pago</div>
+
+  <div class="card-form" id="cardForm">
+    <!-- Card number -->
+    <div class="card-number-row" id="rowNum">
+      <div class="card-num-wrap">
+        <span class="form-row-label">Número de tarjeta</span>
+        <input class="field-input mono" id="inpNum" type="text"
+          placeholder="1234 1234 1234 1234" maxlength="19"
+          oninput="fmtNum(this)" onfocus="clearErr('rowNum','errNum')">
+      </div>
+      <div class="brands-row">
+        <div class="brand b-visa" id="bVisa">VISA</div>
+        <div class="brand b-mc" id="bMC">MC</div>
+        <div class="brand b-amex" id="bAmex">AX</div>
+        <div class="brand b-jcb" id="bJcb">JCB</div>
+      </div>
+    </div>
+    <div class="field-err" id="errNum"><i class="ph ph-warning-circle"></i><span id="errNumMsg">Número de tarjeta inválido</span></div>
+
+    <!-- Expiry / CVC -->
+    <div class="split-row" id="rowExp">
+      <div class="split-cell">
+        <span class="form-row-label">Vencimiento</span>
+        <input class="field-input mono" id="inpExp" type="text"
+          placeholder="MM / AA" maxlength="7"
+          oninput="fmtExp(this)" onfocus="clearErr('rowExp','errExp')">
+      </div>
+      <div class="split-divider"></div>
+      <div class="split-cell">
+        <span class="form-row-label">CVC</span>
+        <input class="field-input mono" id="inpCvc" type="text"
+          placeholder="•••" maxlength="4"
+          oninput="this.value=this.value.replace(/\D/g,'')">
+      </div>
+    </div>
+    <div class="field-err" id="errExp"><i class="ph ph-warning-circle"></i>Fecha de vencimiento inválida</div>
+
+    <!-- Name -->
+    <div class="form-row" id="rowName">
+      <span class="form-row-label">Nombre del titular</span>
+      <input class="field-input" id="inpName" type="text"
+        placeholder="Como aparece en la tarjeta"
+        onfocus="clearErr('rowName','errName')">
+    </div>
+    <div class="field-err" id="errName"><i class="ph ph-warning-circle"></i>Ingresa el nombre del titular</div>
+
+    <!-- Country -->
+    <div class="form-row">
+      <span class="form-row-label">País o región</span>
+      <div class="select-wrap">
+        <select class="field-select" id="inpCountry">
+          <option value="CO">Colombia</option>
+          <option value="US">Estados Unidos</option>
+          <option value="MX">México</option>
+          <option value="BR">Brasil</option>
+          <option value="AR">Argentina</option>
+          <option value="ES">España</option>
+        </select>
+        <i class="ph ph-caret-down select-arrow"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="terms">
+    Al continuar acepto que estoy adquiriendo una licencia limitada para acceder al producto,
+    regida por los <a href="#">Términos de Licencia</a> y la <a href="#">Política de Privacidad</a>
+    de Smartly City. Acepto los <a href="#">Términos de Stripe</a> incluyendo la cláusula de arbitraje.
+  </div>
+
+  <button class="pay-btn" id="payBtn" onclick="pay()">
+    <i class="ph ph-lock"></i>
+    <span id="payBtnText">Pagar</span>
+  </button>
+
+  <div class="right-footer">
+    <i class="ph ph-lock-key" style="font-size:13px;"></i>
+    Pago seguro
+    <span class="right-footer-sep">·</span>
+    <a href="#">Legal</a>
+    <span class="right-footer-sep">·</span>
+    <a href="#">Contacto</a>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     LOADING OVERLAY
+══════════════════════════════════════════ -->
+<div id="overlay">
+  <div class="overlay-card">
+    <div class="spinner-ring"></div>
+    <div class="ov-title" id="ovTitle">Procesando pago</div>
+    <div class="ov-sub" id="ovSub">No cierres esta ventana</div>
+    <div class="progress-track">
+      <div class="progress-bar" id="progBar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RESULT SCREEN
+══════════════════════════════════════════ -->
+<div id="result">
+  <div class="result-inner">
+    <div id="resIcon"></div>
+    <div class="res-title" id="resTitle"></div>
+    <div class="res-sub" id="resSub"></div>
+    <div class="detail-box" id="resDetail"></div>
+    <div class="res-actions" id="resActions"></div>
+  </div>
+</div>
+
+<script>
+// ── READ SESSION FROM URL ──────────────────────────────
+const params = new URLSearchParams(location.search);
+const hash = location.hash.slice(1);
+
+let order = { r: 24000, p: 1149900, v: 183597 };
+
+if (hash) {
+  try {
+    // Decode the base64 token from the URL (same as Stripe does)
+    const padded = hash.replace(/-/g,'+').replace(/_/g,'/');
+    const pad = padded + '='.repeat((4 - padded.length % 4) % 4);
+    order = JSON.parse(atob(pad));
+  } catch(e) { /* use defaults */ }
+}
+
+// ── POPULATE LEFT PANEL ──────────────────────────────
+const COP = n => 'COP\u00a0' + Number(n).toLocaleString('es-CO') + '.00';
+
+document.getElementById('leftAmount').textContent = Number(order.p).toLocaleString('es-CO') + '.00';
+document.getElementById('liProduct').textContent = Number(order.r).toLocaleString() + ' Robux';
+document.getElementById('liPrice').innerHTML = COP(order.p);
+document.getElementById('liSub').innerHTML = COP(order.p);
+document.getElementById('liVat').innerHTML = COP(order.v);
+document.getElementById('liTotal').innerHTML = COP(order.p);
+document.getElementById('payBtnText').textContent = 'Pagar ' + COP(order.p);
+
+// ── SESSION TOKEN DISPLAY ──────────────────────────────
+// Genera un token de sesión simulado como los de Stripe
+const sid = params.get('sid') || 'cs_live_' + [...Array(40)].map(()=>'abcdefghijklmnopqrstuvwxyzABCDEF0123456789'[Math.floor(Math.random()*42)]).join('');
+const fakeHash = btoa(JSON.stringify({ ...order, nonce: Math.random().toString(36).slice(2), t: Date.now() }))
+  .replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+//document.getElementById('sessionDisplay').textContent = sid + '#' + fakeHash.slice(0,60) + '...';
+
+// ── CARD SCENARIOS ────────────────────────────────────
+const SCENARIOS = {
+  '4242424242424242': 'success',
+  '4000000000000002': 'declined',
+  '4000000000009995': 'no_funds',
+  '4000000000000069': 'expired',
+  '4100000000000019': 'fraud',
+  '4000002500003155': '3ds',
+};
+
+let forced = null;
+
+function fill(num, scenario) {
+  forced = scenario;
+  const spaced = num.replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('inpNum').value = spaced;
+  document.getElementById('inpExp').value = '12 / 28';
+  document.getElementById('inpCvc').value = '123';
+  document.getElementById('inpName').value = 'USUARIO TEST';
+  detectBrand(num);
+}
+
+// ── FORMATTING ────────────────────────────────────────
+function fmtNum(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  detectBrand(v);
+  if (v.length === 16) document.getElementById('inpExp').focus();
+}
+
+function fmtExp(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+  if (v.length === 7) document.getElementById('inpCvc').focus();
+}
+
+function detectBrand(num) {
+  const maps = {
+    bVisa: /^4/.test(num),
+    bMC: /^5[1-5]|^2[2-7]/.test(num),
+    bAmex: /^3[47]/.test(num),
+    bJcb: /^35/.test(num),
+  };
+  const anyLit = Object.values(maps).some(Boolean);
+  Object.entries(maps).forEach(([id, lit]) => {
+    const el = document.getElementById(id);
+    if (anyLit) el.classList.toggle('lit', lit);
+    else el.classList.remove('lit');
+  });
+}
+
+// ── VALIDATION ───────────────────────────────────────
+function showErr(rowId, errId, msg) {
+  document.getElementById(rowId).classList.add('has-error');
+  const errEl = document.getElementById(errId);
+  errEl.classList.add('show');
+  if (msg) {
+    const span = errEl.querySelector('span') || errEl;
+    if (span !== errEl) span.textContent = msg;
+  }
+}
+
+function clearErr(rowId, errId) {
+  document.getElementById(rowId).classList.remove('has-error');
+  document.getElementById(errId).classList.remove('show');
+}
+
+function validate() {
+  let ok = true;
+  const num = document.getElementById('inpNum').value.replace(/\s/g,'');
+  const exp = document.getElementById('inpExp').value;
+  const name = document.getElementById('inpName').value.trim();
+  const cvc = document.getElementById('inpCvc').value;
+
+  if (num.length < 13 || num.length > 16) {
+    showErr('rowNum','errNum','Número de tarjeta inválido'); ok = false;
+  } else { clearErr('rowNum','errNum'); }
+
+  if (exp.replace(/\s/g,'').length < 5) {
+    showErr('rowExp','errExp'); ok = false;
+  } else {
+    const [m,y] = exp.split('/').map(s=>parseInt(s));
+    const now = new Date();
+    const cy = now.getFullYear() % 100, cm = now.getMonth()+1;
+    if (m<1||m>12||y<cy||(y===cy&&m<cm)) {
+      showErr('rowExp','errExp'); ok = false;
+    } else { clearErr('rowExp','errExp'); }
+  }
+
+  if (name.length < 2) {
+    showErr('rowName','errName'); ok = false;
+  } else { clearErr('rowName','errName'); }
+
+  return ok;
+}
+
+// ── PAYMENT FLOW ─────────────────────────────────────
+function pay() {
+  if (!validate()) return;
+
+  const raw = document.getElementById('inpNum').value.replace(/\s/g,'');
+  const scenario = forced || SCENARIOS[raw] || 'success';
+  forced = null;
+
+  const steps = [
+    { pct:15, t:'Verificando tarjeta', s:'Comprobando datos' },
+    { pct:35, t:'Conectando con el banco', s:'Autorizando transacción' },
+    { pct:60, t:'Procesando pago', s:'Un momento por favor' },
+    { pct:80, t:'Validando transacción', s:'Casi listo' },
+    { pct:100, t:'Finalizando', s:'Confirmando cobro' },
+  ];
+
+  document.getElementById('overlay').classList.add('show');
+  let i = 0;
+
+  const tick = setInterval(() => {
+    if (i >= steps.length) {
+      clearInterval(tick);
+      setTimeout(() => {
+        document.getElementById('overlay').classList.remove('show');
+        showResult(scenario);
+      }, 450);
+      return;
+    }
+    const s = steps[i];
+    document.getElementById('progBar').style.width = s.pct + '%';
+    document.getElementById('ovTitle').textContent = s.t;
+    document.getElementById('ovSub').textContent = s.s;
+    i++;
+  }, 650);
+}
+
+// ── RESULT SCREEN ─────────────────────────────────────
+const last4 = () => document.getElementById('inpNum').value.replace(/\s/g,'').slice(-4) || '0000';
+const now = () => new Date().toLocaleString('es-CO',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const txId = () => 'ch_' + [...Array(24)].map(()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');
+
+const RESULTS = {
+  success: {
+    icon: `<div class="icon-circle success-c pulse"><i class="ph-bold ph-check"></i></div>`,
+    title: 'Pago completado',
+    sub: `Se han acreditado <strong>${Number(order.r).toLocaleString()} Robux</strong> a tu cuenta de forma inmediata.`,
+    detail: (tx) => `
+      <div class="detail-row"><span>Referencia</span><span class="mono-val">${tx}</span></div>
+      <div class="detail-row"><span>Monto cobrado</span><span>${COP(order.p)}</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Robux acreditados</span><span>R$ ${Number(order.r).toLocaleString()}</span></div>
+      <div class="detail-row"><span>Fecha</span><span>${now()}</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--success);font-weight:600;">Aprobado</span></div>
+    `,
+    actions: `
+      <button class="res-btn-primary" onclick="location.href='https://sofia.numart.com.co'">
+        <i class="ph ph-house"></i> Volver al comercio
+      </button>
+    `,
+    confetti: true,
+  },
+  declined: {
+    icon: `<div class="icon-circle error-c"><i class="ph-bold ph-x"></i></div>`,
+    title: 'Tarjeta rechazada',
+    sub: 'Tu banco rechazó la transacción. Por favor contacta a tu entidad bancaria o intenta con otra tarjeta.',
+    detail: (tx) => `
+      <div class="detail-row"><span>Código de error</span><span class="mono-val">card_declined</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Motivo</span><span>Rechazada por el emisor</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--error);font-weight:600;">Rechazada</span></div>
+    `,
+    actions: `
+      <button class="res-btn-secondary" onclick="retry()">
+        <i class="ph ph-arrow-counter-clockwise"></i> Reintentar
+      </button>
+      <button class="res-btn-primary" onclick="location.href='https://sofia.numart.com.co/'">
+        Cancelar
+      </button>
+    `,
+    confetti: false,
+  },
+  no_funds: {
+    icon: `<div class="icon-circle warn-c"><i class="ph-bold ph-currency-circle-dollar"></i></div>`,
+    title: 'Fondos insuficientes',
+    sub: `Tu tarjeta no tiene saldo suficiente para cubrir ${COP(order.p)}. Verifica tu saldo o usa otra tarjeta.`,
+    detail: (tx) => `
+      <div class="detail-row"><span>Código de error</span><span class="mono-val">insufficient_funds</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Monto requerido</span><span>${COP(order.p)}</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--warning);font-weight:600;">Sin fondos</span></div>
+    `,
+    actions: `
+      <button class="res-btn-secondary" onclick="retry()">
+        <i class="ph ph-arrow-counter-clockwise"></i> Otra tarjeta
+      </button>
+      <button class="res-btn-primary" onclick="location.href='https://sofia.numart.com.co/'">
+        Cancelar
+      </button>
+    `,
+    confetti: false,
+  },
+  expired: {
+    icon: `<div class="icon-circle error-c"><i class="ph-bold ph-calendar-x"></i></div>`,
+    title: 'Tarjeta vencida',
+    sub: 'La tarjeta que ingresaste ha expirado. Por favor utiliza una tarjeta vigente.',
+    detail: (tx) => `
+      <div class="detail-row"><span>Código de error</span><span class="mono-val">expired_card</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--error);font-weight:600;">Vencida</span></div>
+    `,
+    actions: `
+      <button class="res-btn-secondary" onclick="retry()">
+        <i class="ph ph-arrow-counter-clockwise"></i> Otra tarjeta
+      </button>
+      <button class="res-btn-primary" onclick="location.href='https://sofia.numart.com.co/'">
+        Cancelar
+      </button>
+    `,
+    confetti: false,
+  },
+  fraud: {
+    icon: `<div class="icon-circle error-c"><i class="ph-bold ph-shield-warning"></i></div>`,
+    title: 'Transacción bloqueada',
+    sub: 'Por razones de seguridad, esta transacción fue bloqueada. Comunícate con tu banco para más información.',
+    detail: (tx) => `
+      <div class="detail-row"><span>Código de error</span><span class="mono-val">fraudulent</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Motivo</span><span>Actividad sospechosa detectada</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--error);font-weight:600;">Bloqueada</span></div>
+    `,
+    actions: `
+      <button class="res-btn-secondary" onclick="retry()">
+        <i class="ph ph-arrow-counter-clockwise"></i> Reintentar
+      </button>
+      <button class="res-btn-primary" onclick="location.href='https://sofia.numart.com.co/'">
+        Cancelar
+      </button>
+    `,
+    confetti: false,
+  },
+  '3ds': {
+    icon: `<div class="icon-circle warn-c"><i class="ph-bold ph-device-mobile"></i></div>`,
+    title: 'Verificación requerida',
+    sub: 'Tu banco requiere verificación adicional (3D Secure). En un flujo real, serías redirigido a la app de tu banco.',
+    detail: (tx) => `
+      <div class="detail-row"><span>Código</span><span class="mono-val">authentication_required</span></div>
+      <div class="detail-row"><span>Tarjeta</span><span>•••• ${last4()}</span></div>
+      <div class="detail-row"><span>Estado</span><span style="color:var(--warning);font-weight:600;">Pendiente 3DS</span></div>
+    `,
+    actions: `
+      <button class="res-btn-secondary" onclick="retry()">
+        <i class="ph ph-arrow-counter-clockwise"></i> Otra tarjeta
+      </button>
+      <button class="res-btn-primary" onclick="showResult('success')">
+        Autenticar (simular)
+      </button>
+    `,
+    confetti: false,
+  },
+};
+
+function showResult(scenario) {
+  const cfg = RESULTS[scenario] || RESULTS.success;
+  const tx = txId();
+
+  document.getElementById('resIcon').innerHTML = cfg.icon;
+  document.getElementById('resTitle').textContent = cfg.title;
+  document.getElementById('resSub').innerHTML = cfg.sub;
+  document.getElementById('resDetail').innerHTML = cfg.detail(tx);
+  document.getElementById('resActions').innerHTML = cfg.actions;
+  document.getElementById('result').classList.add('show');
+
+  if (cfg.confetti) launchConfetti();
+}
+
+function retry() {
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('inpNum').value = '';
+  document.getElementById('inpExp').value = '';
+  document.getElementById('inpCvc').value = '';
+  document.getElementById('inpName').value = '';
+  forced = null;
+  ['bVisa','bMC','bAmex','bJcb'].forEach(id => document.getElementById(id).classList.remove('lit'));
+}
+
+// ── CONFETTI ─────────────────────────────────────────
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  const cols = ['#0071e3','#34c759','#ff9f0a','#ff375f','#30d158','#007aff','#5ac8fa'];
+  const bits = Array.from({length:120},()=>({
+    x: Math.random()*canvas.width,
+    y: -16,
+    w: 5+Math.random()*8,
+    h: 7+Math.random()*10,
+    c: cols[Math.floor(Math.random()*cols.length)],
+    vx: -1.5+Math.random()*3,
+    vy: 2+Math.random()*4,
+    r: Math.random()*360,
+    rv: -2+Math.random()*4,
+    op: 1,
+  }));
+
+  let raf;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    bits.forEach(b=>{
+      b.x+=b.vx; b.y+=b.vy; b.r+=b.rv; b.vy+=0.06;
+      if(b.y>canvas.height*0.75) b.op-=0.02;
+      ctx.save();
+      ctx.translate(b.x,b.y);
+      ctx.rotate(b.r*Math.PI/180);
+      ctx.globalAlpha=Math.max(0,b.op);
+      ctx.fillStyle=b.c;
+      ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h);
+      ctx.restore();
+    });
+    if(bits.some(b=>b.op>0)) raf=requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+  setTimeout(()=>{ cancelAnimationFrame(raf); ctx.clearRect(0,0,canvas.width,canvas.height); },5000);
+}
+</script>
+</body>
+</html>
