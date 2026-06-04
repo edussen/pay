@@ -1194,7 +1194,7 @@
                     <div class="email-addr" id="userEmail">mrluki4656@gmail.com</div>
                 </div>
             </div>
-            <button class="email-edit">Editar</button>
+            <button class="email-edit" onclick="window.location.href = CANCEL_URL">Editar</button>
         </div>
 
         <!-- Test cards -->
@@ -1344,6 +1344,9 @@
     </div>
 
     <script>
+
+
+
         // ── READ SESSION FROM URL ──────────────────────────────
         const params = new URLSearchParams(location.search);
         const hash = location.hash.slice(1);
@@ -1358,8 +1361,8 @@
             coupon: null,
             billing: 'monthly',
             customer: null,
-            success_url: 'https://sofia.numart.com.co/pago-exitoso',
-            cancel_url: 'https://sofia.numart.com.co/checkout'
+            success_url: 'https://www.numart.com.co/',
+            cancel_url: 'https://www.numart.com.co/'
         };
 
         if (hash) {
@@ -1373,8 +1376,8 @@
         }
 
         // URLs de retorno (con respaldo seguro)
-        const SUCCESS_URL = order.success_url || 'https://sofia.numart.com.co/pago-exitoso';
-        const CANCEL_URL = order.cancel_url || 'https://sofia.numart.com.co/checkout';
+        const SUCCESS_URL = order.success_url || 'https://www.numart.com.co/';
+        const CANCEL_URL = order.cancel_url || 'https://www.numart.com.co/';
 
         // El botón "Volver" cancela el pago y regresa al checkout (sin tocar el HTML).
         (function wireCancel() {
